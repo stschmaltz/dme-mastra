@@ -1,0 +1,73 @@
+{
+  "parameters_used": {
+    "item_1": { "cr": 7, "rarity": "rare", "itemType": "any" },
+    "item_2": { "cr": 4, "rarity": "uncommon", "itemType": "weapon" },
+    "item_3": { "cr": 2, "rarity": "common", "itemType": "potion" },
+    "item_4": { "cr": 10, "rarity": "very_rare", "itemType": "armor" },
+    "item_5": { "cr": 6, "rarity": "rare", "itemType": "scroll" }
+  },
+  "loot": [
+    {
+      "coins": { "cp": 0, "sp": 8, "gp": 9, "pp": 0 },
+      "item": {
+        "name": "Weapon, +2",
+        "category": "Weapon",
+        "rarity": "Rare",
+        "description": "Weapon (any), rare. You have a +2 bonus to attack and damage rolls made with this magic weapon."
+      }
+    },
+    {
+      "coins": { "cp": 11, "sp": 17, "gp": 9, "pp": 0 },
+      "item": {
+        "name": "Weapon, +1",
+        "category": "Weapon",
+        "rarity": "Uncommon",
+        "description": "Weapon (any), uncommon. You have a +1 bonus to attack and damage rolls made with this magic weapon."
+      }
+    },
+    {
+      "coins": { "cp": 19, "sp": 14, "gp": 6, "pp": 0 },
+      "item": {
+        "name": "Potion of Climbing",
+        "category": "Potion",
+        "rarity": "Common",
+        "description": "When you drink this potion, you gain a climbing speed equal to your walking speed for 1 hour. During this time, you have advantage on Strength (Athletics) checks you make to climb."
+      }
+    },
+    {
+      "coins": { "cp": 0, "sp": 10, "gp": 5, "pp": 0 },
+      "items": [
+        {
+          "name": "Bronze Dragon Scale Mail",
+          "category": "Armor",
+          "rarity": "Very Rare",
+          "description": "Armor (scale mail), very rare (requires attunement). While wearing this armor, you gain a +1 bonus to AC, advantage on saving throws against the Frightful Presence and breath weapons of dragons, and resistance to lightning damage. You can magically discern the closest bronze dragon within 30 miles once per dawn."
+        },
+        {
+          "name": "Black Dragon Scale Mail",
+          "category": "Armor",
+          "rarity": "Very Rare",
+          "description": "Armor (scale mail), very rare (requires attunement). While wearing this armor, you gain a +1 bonus to AC, advantage on saving throws against the Frightful Presence and breath weapons of dragons, and resistance to acid damage. You can magically discern the closest black dragon within 30 miles once per dawn."
+        }
+      ]
+    },
+    {
+      "coins": { "cp": 0, "sp": 11, "gp": 7, "pp": 0 },
+      "item": "No scrolls found for this tier/rarity."
+    }
+  ],
+  "made_up_trinkets": [
+    {
+      "name": "Glimmering Pebble",
+      "description": "A small, smooth stone that glows faintly when the moon is full. It feels warm to the touch during thunderstorms."
+    },
+    {
+      "name": "Whispering Locket",
+      "description": "An old silver locket that, when opened, softly whispers the name of the last person who touched it."
+    },
+    {
+      "name": "Crimson Feather",
+      "description": "A bright red feather that never gets wet, no matter how much water it is exposed to."
+    }
+  ]
+}
