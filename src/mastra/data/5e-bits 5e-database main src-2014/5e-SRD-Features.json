@@ -3993,18 +3993,18 @@
         "from": {
           "option_set_type": "options_array",
           "options": [
-            "aberrations", 
-            "beasts", 
-            "celestials", 
-            "constructs", 
-            "dragons", 
-            "elementals", 
-            "fey", 
-            "fiends", 
-            "giants", 
-            "monstrosities", 
-            "oozes", 
-            "plants", 
+            "aberrations",
+            "beasts",
+            "celestials",
+            "constructs",
+            "dragons",
+            "elementals",
+            "fey",
+            "fiends",
+            "giants",
+            "monstrosities",
+            "oozes",
+            "plants",
             "undead",
             "humanoids"
           ]
@@ -4042,12 +4042,12 @@
         "from": {
           "option_set_type": "options_array",
           "options": [
-            "arctic", 
-            "coast", 
-            "desert", 
-            "forest", 
-            "grassland", 
-            "mountain", 
+            "arctic",
+            "coast",
+            "desert",
+            "forest",
+            "grassland",
+            "mountain",
             "swamp"
           ]
         }
@@ -4425,18 +4425,18 @@
         "from": {
           "option_set_type": "options_array",
           "options": [
-            "aberrations", 
-            "beasts", 
-            "celestials", 
-            "constructs", 
-            "dragons", 
-            "elementals", 
-            "fey", 
-            "fiends", 
-            "giants", 
-            "monstrosities", 
-            "oozes", 
-            "plants", 
+            "aberrations",
+            "beasts",
+            "celestials",
+            "constructs",
+            "dragons",
+            "elementals",
+            "fey",
+            "fiends",
+            "giants",
+            "monstrosities",
+            "oozes",
+            "plants",
             "undead",
             "humanoids"
           ]
@@ -4474,12 +4474,12 @@
         "from": {
           "option_set_type": "options_array",
           "options": [
-            "arctic", 
-            "coast", 
-            "desert", 
-            "forest", 
-            "grassland", 
-            "mountain", 
+            "arctic",
+            "coast",
+            "desert",
+            "forest",
+            "grassland",
+            "mountain",
             "swamp"
           ]
         }
@@ -4676,12 +4676,12 @@
         "from": {
           "option_set_type": "options_array",
           "options": [
-            "arctic", 
-            "coast", 
-            "desert", 
-            "forest", 
-            "grassland", 
-            "mountain", 
+            "arctic",
+            "coast",
+            "desert",
+            "forest",
+            "grassland",
+            "mountain",
             "swamp"
           ]
         }
@@ -4844,18 +4844,18 @@
         "from": {
           "option_set_type": "options_array",
           "options": [
-            "aberrations", 
-            "beasts", 
-            "celestials", 
-            "constructs", 
-            "dragons", 
-            "elementals", 
-            "fey", 
-            "fiends", 
-            "giants", 
-            "monstrosities", 
-            "oozes", 
-            "plants", 
+            "aberrations",
+            "beasts",
+            "celestials",
+            "constructs",
+            "dragons",
+            "elementals",
+            "fey",
+            "fiends",
+            "giants",
+            "monstrosities",
+            "oozes",
+            "plants",
             "undead",
             "humanoids"
           ]

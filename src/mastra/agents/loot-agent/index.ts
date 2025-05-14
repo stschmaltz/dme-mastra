@@ -1,11 +1,28 @@
+// agents/loot-agent.ts
 import { Agent } from "@mastra/core";
-import { lootTool } from "../../tools/lootTool";
 import { openai } from "@ai-sdk/openai";
-import { prompt } from "./loot-agent-instructions";
+import { lootTool } from "../../tools/lootTool";
+import { instructions } from "./loot-agent-instructions";
+import { CompletenessMetric } from "@mastra/evals/nlp";
+import {
+  FaithfulnessMetric,
+  PromptAlignmentMetric,
+  ToxicityMetric,
+} from "@mastra/evals/llm";
 
 export const lootAgent = new Agent({
   name: "Loot Agent",
-  model: openai("gpt-4.1"),
-  instructions: prompt,
+  model: openai("gpt-4.1-mini"),
+  instructions,
   tools: { lootTool },
+  evals: {
+    completeness: new CompletenessMetric(),
+    faithfulness: new FaithfulnessMetric(openai("gpt-4.1-mini"), {
+      context: [instructions],
+    }),
+    promptAlignment: new PromptAlignmentMetric(openai("gpt-4.1-mini"), {
+      instructions: [instructions],
+    }),
+    toxicity: new ToxicityMetric(openai("gpt-4.1-mini")),
+  },
 });

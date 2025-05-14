@@ -1,73 +1,55 @@
 {
-  "parameters_used": {
-    "item_1": { "cr": 7, "rarity": "rare", "itemType": "any" },
-    "item_2": { "cr": 4, "rarity": "uncommon", "itemType": "weapon" },
-    "item_3": { "cr": 2, "rarity": "common", "itemType": "potion" },
-    "item_4": { "cr": 10, "rarity": "very_rare", "itemType": "armor" },
-    "item_5": { "cr": 6, "rarity": "rare", "itemType": "scroll" }
+  "randomly_selected_parameters": {
+    "cr": 5,
+    "rarity": "uncommon",
+    "itemType": "any"
   },
-  "loot": [
+  "loot_items": [
+    { "type": "coins", "cp": 0, "sp": 16, "gp": 19, "pp": 0 },
     {
-      "coins": { "cp": 0, "sp": 8, "gp": 9, "pp": 0 },
-      "item": {
-        "name": "Weapon, +2",
-        "category": "Weapon",
-        "rarity": "Rare",
-        "description": "Weapon (any), rare. You have a +2 bonus to attack and damage rolls made with this magic weapon."
-      }
+      "type": "magic_item",
+      "name": "Potion of Resistance",
+      "rarity": "Uncommon",
+      "description": "When you drink this potion, you gain resistance to one type of damage for 1 hour. The GM chooses the type or determines it randomly from acid, cold, fire, force, lightning, necrotic, poison, psychic, radiant, or thunder.",
+      "url": "/api/2014/magic-items/potion-of-resistance"
+    },
+    { "type": "coins", "cp": 0, "sp": 18, "gp": 13, "pp": 0 },
+    {
+      "type": "magic_item",
+      "name": "Potion of Radiant Resistance",
+      "rarity": "Uncommon",
+      "description": "When you drink this potion, you gain resistance to radiant damage for 1 hour.",
+      "url": "/api/2014/magic-items/potion-of-resistance-radiant"
+    },
+    { "type": "coins", "cp": 0, "sp": 15, "gp": 15, "pp": 0 },
+    { "type": "coins", "cp": 0, "sp": 7, "gp": 14, "pp": 0 },
+    {
+      "type": "magic_item",
+      "name": "Spell Scroll (3rd)",
+      "rarity": "Uncommon",
+      "description": "A spell scroll containing a 3rd level spell. If the spell is on your class's spell list, you can cast it without material components. Otherwise, the scroll is unintelligible. The spell's saving throw DC is 15 and the attack bonus is +7.",
+      "url": "/api/2014/magic-items/spell-scroll-3rd"
     },
     {
-      "coins": { "cp": 11, "sp": 17, "gp": 9, "pp": 0 },
-      "item": {
-        "name": "Weapon, +1",
-        "category": "Weapon",
-        "rarity": "Uncommon",
-        "description": "Weapon (any), uncommon. You have a +1 bonus to attack and damage rolls made with this magic weapon."
-      }
-    },
-    {
-      "coins": { "cp": 19, "sp": 14, "gp": 6, "pp": 0 },
-      "item": {
-        "name": "Potion of Climbing",
-        "category": "Potion",
-        "rarity": "Common",
-        "description": "When you drink this potion, you gain a climbing speed equal to your walking speed for 1 hour. During this time, you have advantage on Strength (Athletics) checks you make to climb."
-      }
-    },
-    {
-      "coins": { "cp": 0, "sp": 10, "gp": 5, "pp": 0 },
-      "items": [
-        {
-          "name": "Bronze Dragon Scale Mail",
-          "category": "Armor",
-          "rarity": "Very Rare",
-          "description": "Armor (scale mail), very rare (requires attunement). While wearing this armor, you gain a +1 bonus to AC, advantage on saving throws against the Frightful Presence and breath weapons of dragons, and resistance to lightning damage. You can magically discern the closest bronze dragon within 30 miles once per dawn."
-        },
-        {
-          "name": "Black Dragon Scale Mail",
-          "category": "Armor",
-          "rarity": "Very Rare",
-          "description": "Armor (scale mail), very rare (requires attunement). While wearing this armor, you gain a +1 bonus to AC, advantage on saving throws against the Frightful Presence and breath weapons of dragons, and resistance to acid damage. You can magically discern the closest black dragon within 30 miles once per dawn."
-        }
-      ]
-    },
-    {
-      "coins": { "cp": 0, "sp": 11, "gp": 7, "pp": 0 },
-      "item": "No scrolls found for this tier/rarity."
+      "type": "magic_item",
+      "name": "Potion of Force Resistance",
+      "rarity": "Uncommon",
+      "description": "When you drink this potion, you gain resistance to force damage for 1 hour.",
+      "url": "/api/2014/magic-items/potion-of-resistance-force"
     }
   ],
-  "made_up_trinkets": [
+  "trinkets": [
     {
-      "name": "Glimmering Pebble",
-      "description": "A small, smooth stone that glows faintly when the moon is full. It feels warm to the touch during thunderstorms."
+      "name": "Silvered Acorn",
+      "description": "A perfectly preserved acorn coated in a thin layer of silver. When held, it feels faintly warm and emits a soft, calming chime when shaken."
     },
     {
-      "name": "Whispering Locket",
-      "description": "An old silver locket that, when opened, softly whispers the name of the last person who touched it."
+      "name": "Glimmering Beetle Shell",
+      "description": "A small, iridescent beetle shell that shimmers with shifting colors. It is said to bring luck to those who carry it into unknown places."
     },
     {
-      "name": "Crimson Feather",
-      "description": "A bright red feather that never gets wet, no matter how much water it is exposed to."
+      "name": "Tiny Wooden Mask",
+      "description": "A miniature mask carved from dark wood, depicting a laughing face. Whispering into it causes the mask to echo the sound back in a distorted, giggling tone."
     }
   ]
 }
