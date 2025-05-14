@@ -40,8 +40,7 @@ export const mastra = new Mastra({
   },
   deployer: new VercelDeployer({
     teamSlug: "shane-schmaltzs-projects",
-    projectName: "dme-mastra-api",
-    // Ensure VERCEL_TOKEN is set in your Vercel project environment variables.
+    projectName: "dme-mastra",
     token: process.env.VERCEL_TOKEN!,
   }),
 });
