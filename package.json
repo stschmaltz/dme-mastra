@@ -7,6 +7,7 @@
     "dev": "mastra dev",
     "build": "mastra build",
     "start": "mastra start",
+    "deploy:prod": "cd .mastra/output && vercel --prod",
     "lint": "eslint . --fix",
     "format": "prettier --write .",
     "lintAndFormat": "npm run lint && npm run format"
