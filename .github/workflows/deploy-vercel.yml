@@ -1,0 +1,41 @@
+name: Deploy Mastra to Vercel
+on:
+  push:
+    branches: [main] # deploy to production
+  pull_request: # create preview URLs for every PR
+    branches: ["*"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env: # make env vars available to every step
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # install deps – swap to pnpm/yarn if you prefer
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci --omit=dev
+
+      # build Mastra → writes .vercel/output/config.json (version: 3)
+      - run: npm run build
+
+      # deploy the pre-built output; --prod only on pushes to main
+      - run: |
+          if [[ "$GITHUB_REF_NAME" == "main" ]]; then
+            npx vercel deploy --prebuilt --prod \
+              --yes --token $VERCEL_TOKEN \
+              --org $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
+          else
+            npx vercel deploy --prebuilt \
+              --yes --token $VERCEL_TOKEN \
+              --org $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
+          fi
