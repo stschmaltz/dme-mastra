@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "mastra dev",
-    "build": "mastra build",
+    "build": "mastra build && cp -R .mastra/output .vercel/output",
     "start": "mastra start",
     "deploy:prod": "cd .mastra/output && vercel --prod",
     "lint": "eslint . --fix",
