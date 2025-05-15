@@ -1,23 +1,26 @@
 name: Deploy Mastra to Vercel
+
 on:
   push:
-    branches: [master] # deploy to production
-  pull_request: # create preview URLs for every PR
+    branches: [master] # merge to master → production
+  pull_request: # every PR → preview
     branches: ["*"]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    env: # make env vars available to every step
+    # expose the three required secrets to every step
+    env:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
+      # 1. Check out code
       - uses: actions/checkout@v4
 
-      # install deps – swap to pnpm/yarn if you prefer
+      # 2. Install Node and dependencies
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -25,17 +28,21 @@ jobs:
 
       - run: npm ci --omit=dev
 
-      # build Mastra → writes .vercel/output/config.json (version: 3)
-      - run: npm run build
-
-      # deploy the pre-built output; --prod only on pushes to master
+      # 3. Build Mastra → emits .vercel/output (Build Output API v3)
       - run: |
-          if [[ "$GITHUB_REF_NAME" == "master" ]]; then
+          echo "🔨  Building Mastra project…"
+          npm run build         # package.json → "build": "mastra build"
+
+      # 4. Deploy the *pre-built* output
+      - name: Deploy to Vercel
+        run: |
+          echo "🚀  Deploying to Vercel…"
+          if [[ "${{ github.ref_name }}" == "master" ]]; then
             npx vercel deploy --prebuilt --prod \
-              --yes --token $VERCEL_TOKEN \
-              --org $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
+              --yes --token "$VERCEL_TOKEN" \
+              --scope "$VERCEL_ORG_ID" --project "$VERCEL_PROJECT_ID"
           else
             npx vercel deploy --prebuilt \
-              --yes --token $VERCEL_TOKEN \
-              --org $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
+              --yes --token "$VERCEL_TOKEN" \
+              --scope "$VERCEL_ORG_ID" --project "$VERCEL_PROJECT_ID"
           fi
