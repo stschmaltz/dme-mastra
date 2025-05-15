@@ -1,12 +1,12 @@
 # dme-mastra
 
-A modular agent-based weather assistant built with the Mastra framework. This project demonstrates how to create AI agents with memory, tool usage, and external API integration using TypeScript.
+A modular agent-based D&D loot assistant built with the Mastra framework. This project demonstrates how to create AI agents that leverage SRD data and LLM generation for creating treasure.
 
 ## Features
 
-- Uses OpenAI GPT-4o for natural language understanding
-- Integrates with Open-Meteo APIs for real-time weather data
-- Persistent memory with LibSQL
+- Uses OpenAI GPT for natural language understanding and loot generation
+- Utilizes SRD (System Reference Document) data for D&D content
+- Persistent memory with LibSQL (if applicable, otherwise remove)
 - Extensible tool and agent architecture
 
 ## Project Structure
