@@ -1,7 +1,7 @@
 name: Deploy Mastra to Vercel
 on:
   push:
-    branches: [main] # deploy to production
+    branches: [master] # deploy to production
   pull_request: # create preview URLs for every PR
     branches: ["*"]
 
@@ -28,9 +28,9 @@ jobs:
       # build Mastra → writes .vercel/output/config.json (version: 3)
       - run: npm run build
 
-      # deploy the pre-built output; --prod only on pushes to main
+      # deploy the pre-built output; --prod only on pushes to master
       - run: |
-          if [[ "$GITHUB_REF_NAME" == "main" ]]; then
+          if [[ "$GITHUB_REF_NAME" == "master" ]]; then
             npx vercel deploy --prebuilt --prod \
               --yes --token $VERCEL_TOKEN \
               --org $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
