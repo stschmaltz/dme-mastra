@@ -19,11 +19,11 @@
   "type": "module",
   "dependencies": {
     "@ai-sdk/openai": "^1.3.22",
-    "@mastra/core": "^0.9.4-alpha.0",
+    "@mastra/core": "^0.9.4",
     "@mastra/deployer-vercel": "^0.1.23",
     "@mastra/evals": "^0.1.23",
-    "@mastra/libsql": "^0.0.3",
-    "@mastra/memory": "^0.3.3",
+    "@mastra/libsql": "^0.0.4",
+    "@mastra/memory": "^0.3.4",
     "@mendable/firecrawl-js": "^1.24.0",
     "zod": "^3.24.4"
   },
@@ -34,7 +34,7 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.0",
     "globals": "^16.1.0",
-    "mastra": "^0.6.2",
+    "mastra": "^0.6.3",
     "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
