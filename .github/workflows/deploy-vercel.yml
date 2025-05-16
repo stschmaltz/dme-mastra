@@ -1,8 +1,9 @@
+# .github/workflows/deploy-vercel.yml
 name: Deploy Mastra to Vercel
 
 on:
   push:
-    branches: [master] # merge to master → production
+    branches: [master] # merge → production
   pull_request: # every PR → preview
     branches: ["*"]
 
@@ -10,39 +11,36 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    # expose the three required secrets to every step
+    # Makes the three secrets available to every step
     env:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
-      # 1. Check out code
+      # 1  Check out code
       - uses: actions/checkout@v4
 
-      # 2. Install Node and dependencies
+      # 2  Install Node and deps
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-
       - run: npm ci --omit=dev
 
-      # 3. Build Mastra → emits .vercel/output (Build Output API v3)
-      - run: |
-          echo "🔨  Building Mastra project…"
-          npm run build         # package.json → "build": "mastra build"
+      # 3  Build Mastra → emits .vercel/output (Build-Output-API v3)
+      - run: npm run build # package.json → "build": "mastra build"
 
-      # 4. Deploy the *pre-built* output
+      # 4  Deploy the pre-built output
       - name: Deploy to Vercel
         run: |
-          echo "🚀  Deploying to Vercel…"
+          echo "🚀 Deploying to Vercel…"
           if [[ "${{ github.ref_name }}" == "master" ]]; then
-            npx vercel deploy --prebuilt --prod \
-              --yes --token "$VERCEL_TOKEN" \
-              --scope "$VERCEL_ORG_ID" --project "$VERCEL_PROJECT_ID"
+            npx vercel deploy --prebuilt --prod --yes \
+              --token "$VERCEL_TOKEN" \
+              --scope "$VERCEL_ORG_ID"
           else
-            npx vercel deploy --prebuilt \
-              --yes --token "$VERCEL_TOKEN" \
-              --scope "$VERCEL_ORG_ID" --project "$VERCEL_PROJECT_ID"
+            npx vercel deploy --prebuilt --yes \
+              --token "$VERCEL_TOKEN" \
+              --scope "$VERCEL_ORG_ID"
           fi
