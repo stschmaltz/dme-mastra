@@ -12,7 +12,6 @@ export const lootTool = createTool({
   inputSchema: z.object({
     partyLevel: z.number().int().min(1).max(20).default(3),
     srdItemCount: z.number().int().min(1).max(10).default(2), // SRD items only
-    // randomItemCount is removed as we now expect randomItems array directly
     randomItems: z
       .array(z.string())
       .default([])
@@ -38,13 +37,12 @@ export const lootTool = createTool({
 
     const items = Array.from({ length: srdItemCount }, () => pick(srdPool));
 
-    // Convert the input random item strings to the expected object format
     const formattedRandomItems = randomItems.map((item) => ({ item }));
 
     const result = [
       { coins },
       ...items.map((item) => ({ item })),
-      ...formattedRandomItems, // Use the pre-generated and formatted random items
+      ...formattedRandomItems,
       ...(context ? [{ note: `Theme: ${context}` }] : []),
     ];
 

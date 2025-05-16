@@ -1,10 +1,8 @@
 import { Workflow, Step } from "@mastra/core/workflows";
 import { z } from "zod";
 import { lootTool } from "../tools";
-// randomItemTool is removed, randomItemAgent will be accessed via context
 import { randomItemAgent } from "../agents/random-item-agent";
 
-// Define the schema for the data that triggers the workflow
 const lootWorkflowTriggerSchema = z.object({
   partyLevel: z.number().int().min(1).max(20).default(3),
   srdItemCount: z.number().int().min(1).max(10).default(2),
@@ -77,32 +75,13 @@ const formatLootStep = new Step({
   },
 });
 
-// Define the Workflow
 export const lootGenerationWorkflow = new Workflow({
   name: "loot-generation-workflow",
   triggerSchema: lootWorkflowTriggerSchema,
 });
 
-// Chain the steps
 lootGenerationWorkflow
   .step(generateRandomItemsStep)
   .then(compileLootStep)
   .then(formatLootStep)
   .commit();
-
-// Example of how to potentially run this (conceptual)
-/*
-async function runWorkflow(input: z.infer<typeof lootWorkflowTriggerSchema>) {
-  const { start } = lootGenerationWorkflow.createRun();
-  try {
-    const result = await start({ triggerData: input });
-    if (result.status === 'success') {
-      return result.results.compileLoot.output.finalLootResult;
-    }
-    throw new Error(`Workflow failed: ${result.status}`);
-  } catch (e) {
-    console.error("Error running lootGenerationWorkflow:", e);
-    throw e;
-  }
-}
-*/
