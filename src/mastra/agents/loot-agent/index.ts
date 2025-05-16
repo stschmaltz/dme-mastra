@@ -1,5 +1,5 @@
 // agents/loot-agent.ts
-import { Agent } from "@mastra/core";
+import { Agent } from "@mastra/core/agent";
 import { openai } from "@ai-sdk/openai";
 import { lootTool } from "../../tools/lootTool";
 import { instructions } from "./loot-agent-instructions";
