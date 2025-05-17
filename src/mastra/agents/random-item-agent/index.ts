@@ -16,5 +16,4 @@ export const randomItemAgent = new Agent({
   name: "Creative Treasure Generator Agent",
   model: openai("gpt-4.1-mini"),
   instructions,
-  
 });

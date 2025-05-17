@@ -16,7 +16,7 @@ const byTier: Record<
     // party level 1-4
     low: { dice: "1d8", type: "cp" },
     mid: { dice: "1d6+2", type: "sp" },
-    high: { dice: "2d6", type: "sp" },
+    high: { dice: "1d3", type: "gp" },
   },
   mid: {
     // level 5-10
