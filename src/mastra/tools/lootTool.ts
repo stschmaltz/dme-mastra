@@ -2,6 +2,7 @@
 import { createTool } from "@mastra/core";
 import { z } from "zod";
 import { cosmetics, trinkets, potions } from "./lootTables";
+import { generateCoins } from "./coinTool";
 
 const pick = <T>(a: readonly T[]) => a[Math.floor(Math.random() * a.length)];
 
@@ -11,7 +12,7 @@ export const lootTool = createTool({
     "Generates coins and SRD items, and combines them with pre-generated random items. For LLM-generated random items, use randomItemTool first.",
   inputSchema: z.object({
     partyLevel: z.number().int().min(1).max(20).default(3),
-    srdItemCount: z.number().int().min(1).max(10).default(2), // SRD items only
+    srdItemCount: z.number().int().min(1).max(10).default(2),
     randomItems: z
       .array(z.string())
       .default([])
@@ -22,10 +23,7 @@ export const lootTool = createTool({
   }),
   async execute(ctx) {
     const { context, partyLevel, srdItemCount, randomItems } = ctx.context;
-    /* coins: ~2d6 × level, 30 % chance gp else sp */
-    const coins =
-      `${(Math.ceil(Math.random() * 6) + Math.ceil(Math.random() * 6)) * partyLevel}` +
-      ` ${Math.random() < 0.3 ? "gp" : "sp"}`;
+    const coins = generateCoins(partyLevel);
 
     const srdPool = [
       ...cosmetics,
@@ -37,12 +35,10 @@ export const lootTool = createTool({
 
     const items = Array.from({ length: srdItemCount }, () => pick(srdPool));
 
-    const formattedRandomItems = randomItems.map((item) => ({ item }));
-
     const result = [
       { coins },
-      ...items.map((item) => ({ item })),
-      ...formattedRandomItems,
+      ...items.map((item) => ({ item, source: "official" })),
+      ...randomItems.map((item) => ({ item, source: "random" })),
       ...(context ? [{ note: `Theme: ${context}` }] : []),
     ];
 
