@@ -36,9 +36,9 @@ export const lootTool = createTool({
     const items = Array.from({ length: srdItemCount }, () => pick(srdPool));
 
     const coinEntries = [
-      { coins: `Low: ${coinRolls.low}` },
-      { coins: `Mid: ${coinRolls.mid}` },
-      { coins: `High: ${coinRolls.high}` },
+      { level: "low", coins: coinRolls.low },
+      { level: "mid", coins: coinRolls.mid },
+      { level: "high", coins: coinRolls.high },
     ];
 
     const result = [

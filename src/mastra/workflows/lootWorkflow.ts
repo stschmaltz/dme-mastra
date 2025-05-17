@@ -22,7 +22,7 @@ const generateRandomItemsStep = new Step({
     if (theme) {
       prompt += ` The theme is "${theme}".`;
     }
-    prompt += ` Ensure the output is ONLY a JSON array of strings, with each string being an item name.`;
+    prompt += ` Ensure the output is ONLY a JSON array of strings, with each string being an item name and description.`;
     let items: string[] = [];
     try {
       const result = await randomItemAgent.generate(prompt);
