@@ -43,7 +43,13 @@ export const mastra = new Mastra({
     middleware: [
       {
         handler: async (c, next) => {
-          c.header("Access-Control-Allow-Origin", "*");
+          const allowedOrigins = process.env.ALLOW_LIST_URLS
+            ? process.env.ALLOW_LIST_URLS.split(",").map((u) => u.trim())
+            : [];
+          const origin = c.req.header("Origin") || "";
+          if (allowedOrigins.includes(origin)) {
+            c.header("Access-Control-Allow-Origin", origin);
+          }
           c.header(
             "Access-Control-Allow-Methods",
             "GET, POST, PUT, DELETE, OPTIONS"

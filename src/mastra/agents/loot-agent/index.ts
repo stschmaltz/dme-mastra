@@ -18,7 +18,7 @@ import { lootWorkflowTool } from "../../tools/lootWorkflowTool";
 
 export const lootAgent = new Agent({
   name: "Loot Agent",
-  model: openai("gpt-4.1-mini"),
+  model: openai("gpt-4o-mini"),
   instructions,
   tools: {
     lootWorkflowTool,

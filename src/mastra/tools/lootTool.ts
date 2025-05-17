@@ -2,7 +2,7 @@
 import { createTool } from "@mastra/core";
 import { z } from "zod";
 import { cosmetics, trinkets, potions } from "./lootTables";
-import { generateCoins } from "./coinTool";
+import { coinsPerPlayer } from "./coinTool";
 
 const pick = <T>(a: readonly T[]) => a[Math.floor(Math.random() * a.length)];
 
@@ -23,7 +23,7 @@ export const lootTool = createTool({
   }),
   async execute(ctx) {
     const { context, partyLevel, srdItemCount, randomItems } = ctx.context;
-    const coins = generateCoins(partyLevel);
+    const coinRolls = coinsPerPlayer(partyLevel);
 
     const srdPool = [
       ...cosmetics,
@@ -35,8 +35,14 @@ export const lootTool = createTool({
 
     const items = Array.from({ length: srdItemCount }, () => pick(srdPool));
 
+    const coinEntries = [
+      { coins: `Low: ${coinRolls.low}` },
+      { coins: `Mid: ${coinRolls.mid}` },
+      { coins: `High: ${coinRolls.high}` },
+    ];
+
     const result = [
-      { coins },
+      ...coinEntries,
       ...items.map((item) => ({ item, source: "official" })),
       ...randomItems.map((item) => ({ item, source: "random" })),
       ...(context ? [{ note: `Theme: ${context}` }] : []),

@@ -1,48 +1,59 @@
-import { createTool } from "@mastra/core";
-import { z } from "zod";
-import { rollDice, randomInt } from "../lib/dice";
+// coinPocket.ts
+import { randomInt } from "../lib/dice"; // randomInt(min, max) inclusive
 
-type CoinRoll = {
-  chance: number;
-  dice: string;
-  type: "cp" | "sp" | "ep" | "gp" | "pp";
+export type Tier = "low" | "mid" | "high" | "epic";
+
+interface CoinBracket {
+  dice: string; // e.g. "1d8+2"
+  type: "cp" | "sp" | "gp" | "pp";
+}
+
+const byTier: Record<
+  Tier,
+  { low: CoinBracket; mid: CoinBracket; high: CoinBracket }
+> = {
+  low: {
+    // party level 1-4
+    low: { dice: "1d8", type: "cp" },
+    mid: { dice: "1d6+2", type: "sp" },
+    high: { dice: "2d6", type: "sp" },
+  },
+  mid: {
+    // level 5-10
+    low: { dice: "1d6+4", type: "sp" },
+    mid: { dice: "2d6", type: "sp" },
+    high: { dice: "1d4", type: "gp" },
+  },
+  high: {
+    // level 11-16
+    low: { dice: "2d6", type: "sp" },
+    mid: { dice: "1d6", type: "gp" },
+    high: { dice: "1d4+1", type: "gp" },
+  },
+  epic: {
+    // level 17-20
+    low: { dice: "1d4+2", type: "gp" },
+    mid: { dice: "2d4+2", type: "gp" },
+    high: { dice: "1d4", type: "pp" },
+  },
 };
 
-type Tier = "low" | "mid" | "high" | "epic";
+function rollDice(exp: string): number {
+  const [countStr, rest] = exp.split("d");
+  const [facesStr, modStr] = rest.split("+");
+  const count = +countStr || 1;
+  const faces = +facesStr;
+  const mod = +(modStr ?? 0);
+  let total = mod;
+  for (let i = 0; i < count; i++) total += randomInt(1, faces);
+  return total;
+}
 
-export const coinTables: Record<Tier, CoinRoll[]> = {
-  low: [
-    // CR 0-4 (party Lv 1-4-ish)
-    { chance: 30, dice: "5d6", type: "cp" },
-    { chance: 30, dice: "4d6", type: "sp" },
-    { chance: 10, dice: "3d6", type: "ep" },
-    { chance: 25, dice: "3d6", type: "gp" },
-    { chance: 5, dice: "1d6", type: "pp" },
-  ],
-  mid: [
-    // CR 5-10 (Lv 5-10)
-    { chance: 30, dice: "4d6*100", type: "cp" },
-    { chance: 30, dice: "6d6*10", type: "sp" },
-    { chance: 10, dice: "3d6*10", type: "ep" },
-    { chance: 25, dice: "4d6*10", type: "gp" },
-    { chance: 5, dice: "2d6", type: "pp" },
-  ],
-  high: [
-    // CR 11-16 (Lv 11-16)
-    { chance: 20, dice: "4d6*100", type: "sp" },
-    { chance: 15, dice: "1d6*100", type: "ep" },
-    { chance: 40, dice: "2d6*100", type: "gp" },
-    { chance: 25, dice: "1d6*10", type: "pp" },
-  ],
-  epic: [
-    // CR 17+ (Lv 17-20)
-    { chance: 15, dice: "2d6*1000", type: "ep" },
-    { chance: 40, dice: "1d6*1000", type: "gp" },
-    { chance: 45, dice: "2d6*100", type: "pp" },
-  ],
-};
-
-export function generateCoins(partyLevel: number): string {
+export function coinsPerPlayer(partyLevel: number): {
+  low: string;
+  mid: string;
+  high: string;
+} {
   const tier: Tier =
     partyLevel <= 4
       ? "low"
@@ -52,23 +63,17 @@ export function generateCoins(partyLevel: number): string {
           ? "high"
           : "epic";
 
-  const roll = randomInt(1, 100);
-  let cursor = 0;
-  const entry = coinTables[tier].find((e) => (cursor += e.chance) >= roll)!;
+  const lowBracket = byTier[tier].low;
+  const midBracket = byTier[tier].mid;
+  const highBracket = byTier[tier].high;
 
-  const amount = rollDice(entry.dice);
-  return `${amount} ${entry.type}`;
+  const lowAmt = rollDice(lowBracket.dice);
+  const midAmt = rollDice(midBracket.dice);
+  const highAmt = rollDice(highBracket.dice);
+
+  return {
+    low: `${lowAmt} ${lowBracket.type}`,
+    mid: `${midAmt} ${midBracket.type}`,
+    high: `${highAmt} ${highBracket.type}`,
+  };
 }
-
-export const coinTool = createTool({
-  id: "coinTool",
-  description: "Generates random coins based on party level",
-  inputSchema: z.object({
-    partyLevel: z.number().int().min(1).max(20).default(3),
-  }),
-  async execute(ctx) {
-    const { partyLevel } = ctx.context;
-    const coins = generateCoins(partyLevel);
-    return { coins };
-  },
-});

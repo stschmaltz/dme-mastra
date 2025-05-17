@@ -1,9 +1,12 @@
 function rollDice(dice: string) {
-  const [num, sides] = dice.split("d").map(Number);
-  return Array.from(
+  const [dicePart, mulStr] = dice.split("*");
+  const [num, sides] = dicePart.split("d").map(Number);
+  const multiplier = mulStr ? Number(mulStr) : 1;
+  const sum = Array.from(
     { length: num },
     () => Math.floor(Math.random() * sides) + 1
   ).reduce((a, b) => a + b, 0);
+  return sum * multiplier;
 }
 
 function randomInt(min: number, max: number) {

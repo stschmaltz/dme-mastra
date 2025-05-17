@@ -5,8 +5,8 @@ import { randomItemAgent } from "../agents/random-item-agent";
 
 const lootWorkflowTriggerSchema = z.object({
   partyLevel: z.number().int().min(1).max(20).default(3),
-  srdItemCount: z.number().int().min(1).max(10).default(4),
-  randomItemCount: z.number().int().min(4).max(10),
+  srdItemCount: z.number().int().min(1).max(10).default(5),
+  randomItemCount: z.number().int().min(0).max(10).default(5),
   context: z.string().optional(),
 });
 
