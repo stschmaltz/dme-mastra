@@ -1,11 +1,11 @@
 // coinPocket.ts
-import { randomInt } from "../lib/dice"; // randomInt(min, max) inclusive
+import { randomInt } from "../lib/dice";
 
 export type Tier = "low" | "mid" | "high" | "epic";
 
 interface CoinBracket {
-  dice: string; // e.g. "1d8+2"
-  type: "cp" | "sp" | "gp" | "pp";
+  dice: string; // e.g., "1d8+2"
+  type: "cp" | "sp" | "gp"; // Removed "pp"
 }
 
 const byTier: Record<
@@ -13,53 +13,70 @@ const byTier: Record<
   { low: CoinBracket; mid: CoinBracket; high: CoinBracket }
 > = {
   low: {
-    // party level 1-4
-    low: { dice: "1d8", type: "cp" },
-    mid: { dice: "1d6+2", type: "sp" },
-    high: { dice: "1d3", type: "gp" },
+    // Player Level 1-4
+    low: { dice: "1d6+2", type: "sp" }, // Min: 3 sp, Avg: 5.5 sp
+    mid: { dice: "4d8+4", type: "sp" }, // Min: 7 sp, Avg: 14.5 sp
+    high: { dice: "1d6+1", type: "gp" }, // Min: 2 gp, Avg: 4.5 gp
   },
   mid: {
-    // level 5-10
-    low: { dice: "1d6+4", type: "sp" },
-    mid: { dice: "2d6", type: "sp" },
-    high: { dice: "1d4", type: "gp" },
+    // Player Level 5-10
+    low: { dice: "3d6+5", type: "sp" }, // Min: 8 sp, Avg: 15.5 sp
+    mid: { dice: "2d6+2", type: "gp" }, // Min: 4 gp, Avg: 9 gp
+    high: { dice: "2d8+5", type: "gp" }, // Min: 7 gp, Avg: 14 gp
   },
   high: {
-    // level 11-16
-    low: { dice: "2d6", type: "sp" },
-    mid: { dice: "1d6", type: "gp" },
-    high: { dice: "1d4+1", type: "gp" },
+    // Player Level 11-16
+    low: { dice: "2d10+10", type: "sp" }, // Min: 12 sp, Avg: 21 sp
+    mid: { dice: "3d6+10", type: "gp" }, // Min: 13 gp, Avg: 20.5 gp
+    high: { dice: "10d6+10", type: "gp" }, // Min: 20 gp, Avg: 45 gp
   },
   epic: {
-    // level 17-20
-    low: { dice: "1d4+2", type: "gp" },
-    mid: { dice: "2d4+2", type: "gp" },
-    high: { dice: "1d4", type: "pp" },
+    // Player Level 17-20
+    low: { dice: "2d10+15", type: "gp" }, // Min: 17 gp, Avg: 26 gp
+    mid: { dice: "10d8+20", type: "gp" }, // Min: 30 gp, Avg: 65 gp
+    high: { dice: "20d6+30", type: "gp" }, // Min: 50 gp, Avg: 100 gp
   },
 };
 
 function rollDice(exp: string): number {
-  const [countStr, rest] = exp.split("d");
-  const [facesStr, modStr] = rest.split("+");
-  const count = +countStr || 1;
-  const faces = +facesStr;
-  const mod = +(modStr ?? 0);
-  let total = mod;
-  for (let i = 0; i < count; i++) total += randomInt(1, faces);
-  return total;
+  const diceRegex = /(\d*)d(\d+)(?:([+-])(\d+))?/;
+  const match = exp.match(diceRegex);
+
+  if (!match) {
+    console.error(`Invalid dice expression: ${exp}`);
+    return 0;
+  }
+
+  const count = match[1] ? parseInt(match[1], 10) : 1;
+  const faces = parseInt(match[2], 10);
+  const operator = match[3];
+  const modifier = match[4] ? parseInt(match[4], 10) : 0;
+
+  let total = 0;
+  for (let i = 0; i < count; i++) {
+    total += randomInt(1, faces);
+  }
+
+  if (operator === "+") {
+    total += modifier;
+  } else if (operator === "-") {
+    total -= modifier;
+  }
+
+  return Math.max(0, total);
 }
 
-export function coinsPerPlayer(partyLevel: number): {
+export function coinsPerPlayer(playerLevel: number): {
   low: string;
   mid: string;
   high: string;
 } {
   const tier: Tier =
-    partyLevel <= 4
+    playerLevel <= 4
       ? "low"
-      : partyLevel <= 10
+      : playerLevel <= 10
         ? "mid"
-        : partyLevel <= 16
+        : playerLevel <= 16
           ? "high"
           : "epic";
 

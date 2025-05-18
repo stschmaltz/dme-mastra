@@ -12,7 +12,7 @@ export const lootTool = createTool({
     "Generates coins and SRD items, and combines them with pre-generated random items. For LLM-generated random items, use randomItemTool first.",
   inputSchema: z.object({
     partyLevel: z.number().int().min(1).max(20).default(3),
-    srdItemCount: z.number().int().min(1).max(10).default(2),
+    srdItemCount: z.number().int().min(0).max(10).default(2),
     randomItems: z
       .array(z.object({ item: z.string(), description: z.string() }))
       .default([])

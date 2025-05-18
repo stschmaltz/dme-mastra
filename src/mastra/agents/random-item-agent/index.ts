@@ -2,6 +2,12 @@ import { Agent } from "@mastra/core/agent";
 import { openai } from "@ai-sdk/openai";
 import { z } from "zod";
 import { instructions } from "./random-item-agent-instructions";
+import {
+  FaithfulnessMetric,
+  PromptAlignmentMetric,
+  ToxicityMetric,
+} from "@mastra/evals/llm";
+import { CompletenessMetric } from "@mastra/evals/nlp";
 
 // The Zod schema can be exported for use by callers of this agent
 export const randomItemAgentInputSchema = z.object({
@@ -13,7 +19,17 @@ export const randomItemAgentInputSchema = z.object({
 export type RandomItemAgentInput = z.infer<typeof randomItemAgentInputSchema>;
 
 export const randomItemAgent = new Agent({
-  name: "Creative Treasure Generator Agent",
+  name: "Unofficial Treasure Generator Agent",
   model: openai("gpt-4.1-mini"),
   instructions,
+  evals: {
+    completeness: new CompletenessMetric(),
+    faithfulness: new FaithfulnessMetric(openai("gpt-4.1-mini"), {
+      context: [instructions],
+    }),
+    promptAlignment: new PromptAlignmentMetric(openai("gpt-4.1-mini"), {
+      instructions: [instructions],
+    }),
+    toxicity: new ToxicityMetric(openai("gpt-4.1-mini")),
+  },
 });

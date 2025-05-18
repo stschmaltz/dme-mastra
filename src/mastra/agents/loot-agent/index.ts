@@ -1,20 +1,15 @@
 // agents/loot-agent.ts
 import { Agent } from "@mastra/core/agent";
 import { openai } from "@ai-sdk/openai";
-// Tools are no longer directly used by the agent, they are used by the workflow
-// import { lootTool, randomItemTool } from "../../tools";
 import { instructions } from "./loot-agent-instructions";
-import { CompletenessMetric } from "@mastra/evals/nlp";
+
+import { lootWorkflowTool } from "../../tools/lootWorkflowTool";
 import {
   FaithfulnessMetric,
   PromptAlignmentMetric,
   ToxicityMetric,
 } from "@mastra/evals/llm";
-import { lootWorkflowTool } from "../../tools/lootWorkflowTool";
-
-// The agent might not need any specific tools if the framework handles
-// workflow execution based on instructions. If a specific tool is needed
-// to trigger workflows, it would be listed here.
+import { CompletenessMetric } from "@mastra/evals/nlp";
 
 export const lootAgent = new Agent({
   name: "Loot Agent",
