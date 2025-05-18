@@ -26,7 +26,7 @@ const generateRandomItemsStep = new Step({
     let items: { item: string; description: string }[] = [];
     try {
       const result = await randomItemAgent.generate(prompt, {
-        temperature: 1,
+        temperature: 0.7,
       });
       if (result && typeof result.text === "string") {
         items = JSON.parse(result.text);
