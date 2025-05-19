@@ -3,7 +3,6 @@ import { createLogger } from "@mastra/core/logger";
 import { LibSQLStore } from "@mastra/libsql";
 import { VercelDeployer } from "@mastra/deployer-vercel";
 
-import { lootAgent } from "./agents/loot-agent";
 import { randomItemAgent } from "./agents/random-item-agent";
 import { lootGenerationWorkflow } from "./workflows/lootWorkflow";
 
@@ -28,7 +27,6 @@ export const mastra = new Mastra({
     lootGenerationWorkflow,
   },
   agents: {
-    lootAgent,
     randomItemAgent,
   },
   storage: new LibSQLStore({
