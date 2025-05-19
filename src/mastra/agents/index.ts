@@ -1,1 +1,1 @@
-export * from "./loot-agent";
+export * from "./random-item-agent";
