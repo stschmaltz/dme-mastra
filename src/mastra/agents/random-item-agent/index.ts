@@ -16,13 +16,13 @@ export type RandomItemAgentInput = z.infer<typeof randomItemAgentInputSchema>;
 
 export const randomItemAgent = new Agent({
   name: "Unofficial Treasure Generator Agent",
-  model: openai("gpt-4.1-mini"),
+  model: openai("gpt-4.1"),
   instructions,
   evals: {
     completeness: new CompletenessMetric(),
-    promptAlignment: new PromptAlignmentMetric(openai("gpt-4.1-mini"), {
+    promptAlignment: new PromptAlignmentMetric(openai("gpt-4.1-nano"), {
       instructions: [instructions],
     }),
-    toxicity: new ToxicityMetric(openai("gpt-4.1-mini")),
+    toxicity: new ToxicityMetric(openai("gpt-4.1-nano")),
   },
 });

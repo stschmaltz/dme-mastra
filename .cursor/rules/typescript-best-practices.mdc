@@ -1,0 +1,19 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# TypeScript & Mastra Best Practices
+
+- Do not use `any` type. Always use explicit, strict types.
+- Avoid type casting. Prefer type-safe approaches and proper type inference.
+- Keep files short and focused. If a file grows too large, break it into smaller modules.
+- Break complex logic into small, reusable functions.
+- Favor immutability: avoid mutating variables or objects after creation. Use `const` by default.
+- Follow Mastra framework conventions for workflows, steps, and tools.
+- Use Zod for schema validation and input typing.
+- Prefer functional programming patterns where possible.
+- Ensure all exported functions, classes, and objects are typed.
+- Use async/await for asynchronous code, avoid callbacks and promise chains.
+- Write clear, descriptive variable and function names.
+- Keep business logic out of workflow definitions; use helpers or agents.

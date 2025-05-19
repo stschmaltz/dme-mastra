@@ -18,23 +18,20 @@ const generateRandomItemsStep = new Step({
     if (randomItemCount === 0) {
       return { randomItems: [] };
     }
-    let prompt = `Generate ${randomItemCount} unique, non-SRD fantasy items for a party level of ${partyLevel}.`;
-    if (theme) {
-      prompt += ` The theme is "${theme}".`;
-    }
-    prompt += ` Ensure the output is ONLY a JSON array of objects, each object having two string properties: item and description.`;
-    let items: { item: string; description: string }[] = [];
+    const themeText = theme ? ` The theme is "${theme}".` : "";
+    const prompt = `Generate ${randomItemCount} unique, non-SRD fantasy items for a party level of ${partyLevel}.${themeText} Ensure the output is ONLY a JSON array of objects, each object having two string properties: item and description.`;
     try {
       const result = await randomItemAgent.generate(prompt, {
         temperature: 0.8,
       });
       if (result && typeof result.text === "string") {
-        items = JSON.parse(result.text);
+        const items = JSON.parse(result.text);
+        return { randomItems: items.slice(0, randomItemCount) };
       }
     } catch {
-      items = [];
+      /* noop */
     }
-    return { randomItems: items.slice(0, randomItemCount) };
+    return { randomItems: [] };
   },
 });
 

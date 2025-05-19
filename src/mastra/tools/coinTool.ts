@@ -12,31 +12,36 @@ const byTier: Record<
   Tier,
   { low: CoinBracket; mid: CoinBracket; high: CoinBracket }
 > = {
+  /*   TIER 1-4  :  0.3 – 3.5 gp per pocket   */
   low: {
-    // Player Level 1-4
-    low: { dice: "1d6+2", type: "sp" }, // Min: 3 sp, Avg: 5.5 sp
-    mid: { dice: "4d8+4", type: "sp" }, // Min: 7 sp, Avg: 14.5 sp
-    high: { dice: "1d6+1", type: "gp" }, // Min: 2 gp, Avg: 4.5 gp
+    low: { dice: "1d6+2", type: "sp" }, // 0.3 – 0.8 gp   (avg ≈ 0.55)
+    mid: { dice: "2d8+4", type: "sp" }, // 0.6 – 2.0 gp   (avg ≈ 1.2)
+    high: { dice: "1d4+1", type: "gp" }, // 2 – 5 gp       (avg ≈ 3.5)
   },
+
+  /*   TIER 5-10 :  0.8 – 11 gp per pocket   */
   mid: {
-    // Player Level 5-10
-    low: { dice: "3d6+5", type: "sp" }, // Min: 8 sp, Avg: 15.5 sp
-    mid: { dice: "2d6+2", type: "gp" }, // Min: 4 gp, Avg: 9 gp
-    high: { dice: "2d8+5", type: "gp" }, // Min: 7 gp, Avg: 14 gp
+    low: { dice: "2d8+4", type: "sp" }, // 0.6 – 2.0 gp   (avg ≈ 1.3)
+    mid: { dice: "1d4+4", type: "gp" }, // 5 – 8 gp       (avg ≈ 6.5)
+    high: { dice: "2d6+4", type: "gp" }, // 6 – 16 gp      (avg ≈ 11)
   },
+
+  /*   TIER 11-16:  2 – 33 gp per pocket     */
   high: {
-    // Player Level 11-16
-    low: { dice: "2d10+10", type: "sp" }, // Min: 12 sp, Avg: 21 sp
-    mid: { dice: "3d6+10", type: "gp" }, // Min: 13 gp, Avg: 20.5 gp
-    high: { dice: "10d6+10", type: "gp" }, // Min: 20 gp, Avg: 45 gp
+    low: { dice: "3d10+5", type: "sp" }, // 1.2 – 3.5 gp   (avg ≈ 2.1)
+    mid: { dice: "1d8+12", type: "gp" }, // 13 – 20 gp     (avg ≈ 16.5)
+    high: { dice: "6d6+12", type: "gp" }, // 18 – 48 gp     (avg ≈ 33)
   },
+
+  /*   TIER 17+  :  21 – ≈ 100 gp per pocket */
   epic: {
-    // Player Level 17-20
-    low: { dice: "2d10+15", type: "gp" }, // Min: 17 gp, Avg: 26 gp
-    mid: { dice: "10d8+20", type: "gp" }, // Min: 30 gp, Avg: 65 gp
-    high: { dice: "20d6+30", type: "gp" }, // Min: 50 gp, Avg: 100 gp
+    low: { dice: "2d10+10", type: "gp" }, // 12 – 30 gp     (avg ≈ 21)
+    mid: { dice: "4d8+25", type: "gp" }, // 29 – 57 gp     (avg ≈ 43)
+    high: { dice: "12d6+24", type: "gp" }, // 36 – 96 gp     (avg ≈ 66)
   },
 };
+
+// (The rest of your functions: rollDice, coinsPerPlayer remain the same)
 
 function rollDice(exp: string): number {
   const diceRegex = /(\d*)d(\d+)(?:([+-])(\d+))?/;

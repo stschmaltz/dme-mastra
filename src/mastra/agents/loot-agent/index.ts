@@ -13,19 +13,19 @@ import { CompletenessMetric } from "@mastra/evals/nlp";
 
 export const lootAgent = new Agent({
   name: "Loot Agent",
-  model: openai("gpt-4o-mini"),
+  model: openai("gpt-4.1-nano"),
   instructions,
   tools: {
     lootWorkflowTool,
   },
   evals: {
     completeness: new CompletenessMetric(),
-    faithfulness: new FaithfulnessMetric(openai("gpt-4.1-mini"), {
+    faithfulness: new FaithfulnessMetric(openai("gpt-4.1-nano"), {
       context: [instructions],
     }),
-    promptAlignment: new PromptAlignmentMetric(openai("gpt-4.1-mini"), {
+    promptAlignment: new PromptAlignmentMetric(openai("gpt-4.1-nano"), {
       instructions: [instructions],
     }),
-    toxicity: new ToxicityMetric(openai("gpt-4.1-mini")),
+    toxicity: new ToxicityMetric(openai("gpt-4.1-nano")),
   },
 });
