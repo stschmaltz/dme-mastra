@@ -36,9 +36,9 @@ const generateRandomItemsStep = createStep({
       ? ` The loot quality is "${lootQuality}".`
       : "";
     const effectsText = includeEffects
-      ? " Include an 'effects' property with minor mechanical or flavor effects when appropriate (following rarity guidelines)."
+      ? " IMPORTANT: You MUST include an 'effects' property for EVERY item with minor D&D 5e mechanical or flavor effects. Scale effects by rarity: common items get minor effects, legendary items get powerful effects. Use proper D&D terminology (advantage, saving throws, spell names, damage types). Effects are REQUIRED for all items."
       : " Do NOT include an 'effects' property. Only include 'item', 'description', and 'rarity' properties.";
-    const prompt = `Generate ${randomItemCount} unique, non-SRD fantasy items for a party level of ${partyLevel}.${locationText}${qualityText}${effectsText} Ensure the output is ONLY a JSON array of objects.`;
+    const prompt = `Generate ${randomItemCount} unique, non-SRD fantasy items for a party level of ${partyLevel}.${locationText}${qualityText}${effectsText} Ensure the output is ONLY a JSON array of objects with properties: item, description, rarity${includeEffects ? ", effects" : ""}.`;
     try {
       const result = await randomItemAgent.generate(prompt, {
         modelSettings: {

@@ -14,10 +14,17 @@ export const lootTool = createTool({
     partyLevel: z.number().int().min(1).max(20).default(3),
     srdItemCount: z.number().int().min(0).max(10).default(2),
     randomItems: z
-      .array(z.object({ item: z.string(), description: z.string() }))
+      .array(
+        z.object({
+          item: z.string(),
+          description: z.string(),
+          rarity: z.string().optional(),
+          effects: z.string().optional(),
+        })
+      )
       .default([])
       .describe(
-        "Array of pre-generated random items, each with item name and description"
+        "Array of pre-generated random items, each with item name, description, rarity, and optional effects"
       ),
     context: z.string().optional(),
   }),
@@ -48,6 +55,8 @@ export const lootTool = createTool({
         item: ri.item,
         source: "random",
         description: ri.description,
+        rarity: ri.rarity,
+        effects: ri.effects,
       })),
       ...(context ? [{ note: `Theme: ${context}` }] : []),
     ];
