@@ -17,7 +17,10 @@ const generateNpcStep = createStep({
   execute: async ({ inputData }) => {
     const { race, occupation, context: setting, includeSecret, includeBackground } = inputData;
     
-    let prompt = `Generate a unique D&D 5e NPC`;
+    const randomSeed = Math.floor(Math.random() * 1000000);
+    const timestamp = Date.now();
+    
+    let prompt = `Generate a COMPLETELY UNIQUE and CREATIVE D&D 5e NPC (Request ID: ${randomSeed}-${timestamp})`;
     
     if (race) {
       prompt += ` who is a ${race}`;
@@ -39,11 +42,12 @@ const generateNpcStep = createStep({
       prompt += `. Include a background story.`;
     }
     
-    prompt += ` Return ONLY valid JSON with the NPC data.`;
+    prompt += `. IMPORTANT: Create an entirely fresh character with unique traits, avoiding any repetition from previous generations. Return ONLY valid JSON with the NPC data.`;
     
     try {
       const result = await npcGeneratorAgent.generate(prompt, {
-        temperature: 0.9,
+        temperature: 1.2,
+        maxTokens: 1000,
       });
       
       if (result && typeof result.text === "string") {

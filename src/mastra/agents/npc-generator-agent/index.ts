@@ -15,7 +15,10 @@ export type NpcGeneratorAgentInput = z.infer<typeof npcGeneratorAgentInputSchema
 
 export const npcGeneratorAgent = new Agent({
   name: "NPC Generator Agent",
-  model: openai("gpt-4o-mini"),
+  model: openai("gpt-4o-mini", {
+    structuredOutputs: true,
+  }),
   instructions,
+  enableThinking: false,
 });
 
