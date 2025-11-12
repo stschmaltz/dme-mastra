@@ -1,0 +1,14 @@
+node_modules
+.git
+.env*
+!.env.production
+*.log
+.DS_Store
+.vscode
+.idea
+*.md
+!README.md
+src
+eslint.config.js
+tsconfig.json
+

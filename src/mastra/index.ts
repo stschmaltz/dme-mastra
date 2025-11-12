@@ -26,7 +26,14 @@ if (!process.env.VERCEL_TOKEN) {
 
 export const mastra = new Mastra({
   bundler: {
-    externals: ["@mastra/deployer-vercel"],
+    externals: [
+      "@mastra/deployer-vercel",
+      "typescript",
+      "@types/node",
+      "ts-node",
+      "eslint",
+      "prettier",
+    ],
   },
   workflows: {
     lootGenerationWorkflow,
@@ -72,9 +79,5 @@ export const mastra = new Mastra({
       },
     ],
   },
-  deployer: new VercelDeployer({
-    teamSlug: "shane-schmaltzs-projects",
-    projectName: "dme-mastra",
-    token: process.env.VERCEL_TOKEN!,
-  }),
+  deployer: new VercelDeployer(),
 });

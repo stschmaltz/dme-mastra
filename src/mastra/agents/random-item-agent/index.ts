@@ -2,8 +2,6 @@ import { Agent } from "@mastra/core/agent";
 import { openai } from "@ai-sdk/openai";
 import { z } from "zod";
 import { instructions } from "./random-item-agent-instructions";
-import { PromptAlignmentMetric, ToxicityMetric } from "@mastra/evals/llm";
-import { CompletenessMetric } from "@mastra/evals/nlp";
 
 // The Zod schema can be exported for use by callers of this agent
 export const randomItemAgentInputSchema = z.object({
