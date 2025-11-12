@@ -13,6 +13,7 @@ const generateRandomItemsStep = createStep({
     lootQuality: z
       .enum(["basic", "standard", "good", "major", "legendary"])
       .default("standard"),
+    includeEffects: z.boolean().default(true),
   }),
   outputSchema: z.object({
     randomItems: z.array(z.any()),
@@ -21,17 +22,23 @@ const generateRandomItemsStep = createStep({
     const {
       partyLevel,
       randomItemCount,
-      context: theme,
+      context: location,
       lootQuality,
+      includeEffects,
     } = inputData;
     if (randomItemCount === 0) {
       return { randomItems: [] };
     }
-    const themeText = theme ? ` The theme is "${theme}".` : "";
+    const locationText = location
+      ? ` These items are found in or at: "${location}".`
+      : "";
     const qualityText = lootQuality
       ? ` The loot quality is "${lootQuality}".`
       : "";
-    const prompt = `Generate ${randomItemCount} unique, non-SRD fantasy items for a party level of ${partyLevel}.${themeText}${qualityText} Ensure the output is ONLY a JSON array of objects, each object having three required string properties (item, description, rarity) and one optional string property (effects) containing minor game effects.`;
+    const effectsText = includeEffects
+      ? " Include an 'effects' property with minor mechanical or flavor effects when appropriate (following rarity guidelines)."
+      : " Do NOT include an 'effects' property. Only include 'item', 'description', and 'rarity' properties.";
+    const prompt = `Generate ${randomItemCount} unique, non-SRD fantasy items for a party level of ${partyLevel}.${locationText}${qualityText}${effectsText} Ensure the output is ONLY a JSON array of objects.`;
     try {
       const result = await randomItemAgent.generate(prompt, {
         modelSettings: {
@@ -61,13 +68,18 @@ const compileLootStep = createStep({
     loot: z.any(),
   }),
   execute: async ({ inputData }) => {
-    const { partyLevel, srdItemCount, context: theme, randomItems } = inputData;
+    const {
+      partyLevel,
+      srdItemCount,
+      context: location,
+      randomItems,
+    } = inputData;
 
     if (!lootTool || typeof lootTool.execute !== "function") {
       throw new Error("lootTool or its execute method is not available.");
     }
     const loot = await lootTool.execute({
-      context: { partyLevel, srdItemCount, randomItems, context: theme },
+      context: { partyLevel, srdItemCount, randomItems, context: location },
       id: lootTool.id,
       description: lootTool.description,
       inputSchema: lootTool.inputSchema,
@@ -107,6 +119,7 @@ export const lootGenerationWorkflow = createWorkflow({
     lootQuality: z
       .enum(["basic", "standard", "good", "major", "legendary"])
       .default("standard"),
+    includeEffects: z.boolean().default(true),
   }),
   outputSchema: z.array(z.any()),
 })
