@@ -4,7 +4,9 @@ import { LibSQLStore } from "@mastra/libsql";
 import { VercelDeployer } from "@mastra/deployer-vercel";
 
 import { randomItemAgent } from "./agents/random-item-agent";
+import { npcGeneratorAgent } from "./agents/npc-generator-agent";
 import { lootGenerationWorkflow } from "./workflows/lootWorkflow";
+import { npcGenerationWorkflow } from "./workflows/npcWorkflow";
 
 if (!process.env.TURSO_DATABASE_URL) {
   throw new Error(
@@ -23,11 +25,16 @@ if (!process.env.VERCEL_TOKEN) {
 }
 
 export const mastra = new Mastra({
+  bundler: {
+    externals: ["@mastra/deployer-vercel"],
+  },
   workflows: {
     lootGenerationWorkflow,
+    npcGenerationWorkflow,
   },
   agents: {
     randomItemAgent,
+    npcGeneratorAgent,
   },
   storage: new LibSQLStore({
     url: process.env.TURSO_DATABASE_URL,
