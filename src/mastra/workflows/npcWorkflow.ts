@@ -15,41 +15,55 @@ const generateNpcStep = createStep({
     npc: z.any(),
   }),
   execute: async ({ inputData }) => {
-    const { race, occupation, context: setting, includeSecret, includeBackground } = inputData;
-    
+    const {
+      race,
+      occupation,
+      context: setting,
+      includeSecret,
+      includeBackground,
+    } = inputData;
+
     const randomSeed = Math.floor(Math.random() * 1000000);
     const timestamp = Date.now();
-    
+
     let prompt = `Generate a COMPLETELY UNIQUE and CREATIVE D&D 5e NPC (Request ID: ${randomSeed}-${timestamp})`;
-    
+
     if (race) {
       prompt += ` who is a ${race}`;
     }
-    
+
     if (occupation) {
-      prompt += race ? ` working as a ${occupation}` : ` who is a ${occupation}`;
+      prompt += race
+        ? ` working as a ${occupation}`
+        : ` who is a ${occupation}`;
     }
-    
+
     if (setting) {
       prompt += `. Setting: ${setting}`;
     }
-    
+
     if (includeSecret) {
       prompt += `. Include a secret.`;
     }
-    
+
     if (includeBackground) {
       prompt += `. Include a background story.`;
     }
-    
+
     prompt += `. IMPORTANT: Create an entirely fresh character with unique traits, avoiding any repetition from previous generations. Return ONLY valid JSON with the NPC data.`;
-    
+
     try {
       const result = await npcGeneratorAgent.generate(prompt, {
-        temperature: 1.2,
-        maxTokens: 1000,
+        providerOptions: {
+          openai: {
+            reasoningEffort: "low",
+          },
+        },
+        modelSettings: {
+          temperature: 1.2,
+        },
       });
-      
+
       if (result && typeof result.text === "string") {
         const npcData = JSON.parse(result.text);
         return { npc: npcData };
@@ -58,7 +72,7 @@ const generateNpcStep = createStep({
       console.error("Error generating NPC:", error);
       throw new Error("Failed to generate NPC");
     }
-    
+
     throw new Error("No valid NPC data returned");
   },
 });
@@ -71,11 +85,11 @@ const formatNpcStep = createStep({
   outputSchema: z.any(),
   execute: async ({ inputData }) => {
     const { npc } = inputData;
-    
+
     if (npc && typeof npc === "object" && npc.name) {
       return npc;
     }
-    
+
     throw new Error("Invalid NPC data format");
   },
 });
@@ -94,4 +108,3 @@ export const npcGenerationWorkflow = createWorkflow({
   .then(generateNpcStep)
   .then(formatNpcStep)
   .commit();
-

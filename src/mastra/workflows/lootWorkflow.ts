@@ -41,8 +41,13 @@ const generateRandomItemsStep = createStep({
     const prompt = `Generate ${randomItemCount} unique, non-SRD fantasy items for a party level of ${partyLevel}.${locationText}${qualityText}${effectsText} Ensure the output is ONLY a JSON array of objects with properties: item, description, rarity${includeEffects ? ", effects" : ""}.`;
     try {
       const result = await randomItemAgent.generate(prompt, {
+        providerOptions: {
+          openai: {
+            reasoningEffort: "low",
+          },
+        },
         modelSettings: {
-          temperature: 0.8,
+          temperature: 0.7,
         },
       });
       if (result && typeof result.text === "string") {

@@ -14,6 +14,6 @@ export type RandomItemAgentInput = z.infer<typeof randomItemAgentInputSchema>;
 
 export const randomItemAgent = new Agent({
   name: "Unofficial Treasure Generator Agent",
-  model: openai("gpt-4o-mini"),
+  model: openai("gpt-5-mini"),
   instructions,
 });
