@@ -7,6 +7,7 @@ export default defineConfig([
   {
     ignores: [
       "**/.mastra/**",
+      "**/.vercel/**",
       "**/node_modules/**",
       "**/dist/**",
       "**/*.json",
