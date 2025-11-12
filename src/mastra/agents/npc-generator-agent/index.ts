@@ -11,7 +11,9 @@ export const npcGeneratorAgentInputSchema = z.object({
   includeBackground: z.boolean().default(false),
 });
 
-export type NpcGeneratorAgentInput = z.infer<typeof npcGeneratorAgentInputSchema>;
+export type NpcGeneratorAgentInput = z.infer<
+  typeof npcGeneratorAgentInputSchema
+>;
 
 export const npcGeneratorAgent = new Agent({
   name: "NPC Generator Agent",
@@ -21,4 +23,3 @@ export const npcGeneratorAgent = new Agent({
   instructions,
   enableThinking: false,
 });
-
