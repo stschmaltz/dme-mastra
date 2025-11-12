@@ -26,14 +26,7 @@ if (!process.env.VERCEL_TOKEN) {
 
 export const mastra = new Mastra({
   bundler: {
-    externals: [
-      "@mastra/deployer-vercel",
-      "typescript",
-      "@types/node",
-      "ts-node",
-      "eslint",
-      "prettier",
-    ],
+    externals: ["@mastra/deployer-vercel"],
   },
   workflows: {
     lootGenerationWorkflow,
