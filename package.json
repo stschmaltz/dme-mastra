@@ -7,7 +7,7 @@
     "dev": "mastra dev",
     "build": "mastra build",
     "start": "mastra start",
-    "deploy:prod": "cd .mastra/output && vercel --prod",
+    "deploy:prod": "vercel --prod --prebuilt --archive=tgz",
     "lint": "eslint . --fix",
     "format": "prettier --write .",
     "lintAndFormat": "npm run lint && npm run format"
