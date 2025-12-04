@@ -1,6 +1,7 @@
 import { createWorkflow, createStep } from "@mastra/core/workflows";
 import { z } from "zod";
 import { npcGeneratorAgent } from "../agents/npc-generator-agent";
+import { parseJsonFromText } from "../lib/json";
 
 const generateNpcStep = createStep({
   id: "generateNpc",
@@ -65,7 +66,7 @@ const generateNpcStep = createStep({
       });
 
       if (result && typeof result.text === "string") {
-        const npcData = JSON.parse(result.text);
+        const npcData = parseJsonFromText(result.text);
         return { npc: npcData };
       }
     } catch (error) {

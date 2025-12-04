@@ -2,6 +2,7 @@ import { createWorkflow, createStep } from "@mastra/core/workflows";
 import { z } from "zod";
 import { lootTool } from "../tools";
 import { randomItemAgent } from "../agents/random-item-agent";
+import { parseJsonFromText } from "../lib/json";
 
 const generateRandomItemsStep = createStep({
   id: "generateRandomItems",
@@ -51,11 +52,13 @@ const generateRandomItemsStep = createStep({
         },
       });
       if (result && typeof result.text === "string") {
-        const items = JSON.parse(result.text);
-        return { randomItems: items.slice(0, randomItemCount) };
+        const items = parseJsonFromText(result.text);
+        if (Array.isArray(items)) {
+          return { randomItems: items.slice(0, randomItemCount) };
+        }
       }
-    } catch {
-      /* noop */
+    } catch (error) {
+      console.error("Error parsing random items from AI response:", error);
     }
     return { randomItems: [] };
   },
