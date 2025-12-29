@@ -105,14 +105,6 @@ const generateNpcStep = createStep({
         modelSettings: {
           temperature: 1.2,
         },
-        providerOptions: {
-          google: {
-            thinkingConfig: {
-              thinkingLevel: useFastMode ? "low" : "medium",
-              includeThoughts: false,
-            },
-          },
-        },
       });
 
       if (result && result.object) {
