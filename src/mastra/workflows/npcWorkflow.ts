@@ -2,6 +2,19 @@ import { createWorkflow, createStep } from "@mastra/core/workflows";
 import { z } from "zod";
 import { npcGeneratorAgent } from "../agents/npc-generator-agent";
 
+function stripMarkdownCodeBlocks(text: string): string {
+  let cleaned = text.trim();
+  if (cleaned.startsWith("```json")) {
+    cleaned = cleaned.slice(7);
+  } else if (cleaned.startsWith("```")) {
+    cleaned = cleaned.slice(3);
+  }
+  if (cleaned.endsWith("```")) {
+    cleaned = cleaned.slice(0, -3);
+  }
+  return cleaned.trim();
+}
+
 const generateNpcStep = createStep({
   id: "generateNpc",
   inputSchema: z.object({
@@ -68,7 +81,8 @@ const generateNpcStep = createStep({
 
       if (result && typeof result.text === "string") {
         console.log("Raw NPC result:", result.text);
-        const npcData = JSON.parse(result.text);
+        const cleanedText = stripMarkdownCodeBlocks(result.text);
+        const npcData = JSON.parse(cleanedText);
         return { npc: npcData };
       }
     } catch (error) {

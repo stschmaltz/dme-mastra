@@ -3,6 +3,19 @@ import { z } from "zod";
 import { lootTool } from "../tools";
 import { randomItemAgent } from "../agents/random-item-agent";
 
+function stripMarkdownCodeBlocks(text: string): string {
+  let cleaned = text.trim();
+  if (cleaned.startsWith("```json")) {
+    cleaned = cleaned.slice(7);
+  } else if (cleaned.startsWith("```")) {
+    cleaned = cleaned.slice(3);
+  }
+  if (cleaned.endsWith("```")) {
+    cleaned = cleaned.slice(0, -3);
+  }
+  return cleaned.trim();
+}
+
 const generateRandomItemsStep = createStep({
   id: "generateRandomItems",
   inputSchema: z.object({
@@ -53,7 +66,8 @@ const generateRandomItemsStep = createStep({
       });
       if (result && typeof result.text === "string") {
         console.log("Raw random items result:", result.text);
-        const items = JSON.parse(result.text);
+        const cleanedText = stripMarkdownCodeBlocks(result.text);
+        const items = JSON.parse(cleanedText);
         return { randomItems: items.slice(0, randomItemCount) };
       }
     } catch {

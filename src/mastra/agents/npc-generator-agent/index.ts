@@ -21,6 +21,6 @@ export type NpcGeneratorAgentInput = z.infer<
 export const npcGeneratorAgent = new Agent({
   name: "NPC Generator Agent",
   id: "npc-generator-agent",
-  model: google("gemini-flash-latest"),
+  model: google("gemini-pro-latest"),
   instructions,
 });
