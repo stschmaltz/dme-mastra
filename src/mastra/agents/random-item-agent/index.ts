@@ -13,8 +13,6 @@ export const randomItemAgentInputSchema = z.object({
 
 export type RandomItemAgentInput = z.infer<typeof randomItemAgentInputSchema>;
 
-// const geminiModel = google("gemini-flash-latest");
-
 export const randomItemAgent = new Agent({
   name: "Unofficial Treasure Generator Agent",
   id: "random-item-agent",

@@ -52,6 +52,8 @@ const generateNpcStep = createStep({
 
     prompt += `. IMPORTANT: Create an entirely fresh character with unique traits, avoiding any repetition from previous generations. Return ONLY valid JSON with the NPC data.`;
 
+    console.log("Generating NPC with prompt:", prompt);
+
     try {
       const result = await npcGeneratorAgent.generate(prompt, {
         providerOptions: {
@@ -65,6 +67,7 @@ const generateNpcStep = createStep({
       });
 
       if (result && typeof result.text === "string") {
+        console.log("Raw NPC result:", result.text);
         const npcData = JSON.parse(result.text);
         return { npc: npcData };
       }

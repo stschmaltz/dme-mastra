@@ -39,6 +39,7 @@ const generateRandomItemsStep = createStep({
       ? " IMPORTANT: You MUST include an 'effects' property for EVERY item with minor D&D 5e mechanical or flavor effects. Scale effects by rarity: common items get minor effects, legendary items get powerful effects. Use proper D&D terminology (advantage, saving throws, spell names, damage types). Effects are REQUIRED for all items."
       : " Do NOT include an 'effects' property. Only include 'item', 'description', and 'rarity' properties.";
     const prompt = `Generate ${randomItemCount} unique, non-SRD fantasy items for a party level of ${partyLevel}.${locationText}${qualityText}${effectsText} Ensure the output is ONLY a JSON array of objects with properties: item, description, rarity${includeEffects ? ", effects" : ""}.`;
+    console.log("Generating random items with params:", { partyLevel, randomItemCount, location, lootQuality });
     try {
       const result = await randomItemAgent.generate(prompt, {
         providerOptions: {
@@ -51,6 +52,7 @@ const generateRandomItemsStep = createStep({
         },
       });
       if (result && typeof result.text === "string") {
+        console.log("Raw random items result:", result.text);
         const items = JSON.parse(result.text);
         return { randomItems: items.slice(0, randomItemCount) };
       }
