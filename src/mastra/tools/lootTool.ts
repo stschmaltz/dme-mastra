@@ -28,8 +28,8 @@ export const lootTool = createTool({
       ),
     context: z.string().optional(),
   }),
-  async execute(inputData) {
-    const { context, partyLevel, srdItemCount, randomItems } = inputData;
+  async execute(ctx) {
+    const { context, partyLevel, srdItemCount, randomItems } = ctx.context;
     const coinRolls = coinsPerPlayer(partyLevel);
 
     const srdPool = [

@@ -2,18 +2,20 @@ import { createWorkflow, createStep } from "@mastra/core/workflows";
 import { z } from "zod";
 import { npcGeneratorAgent } from "../agents/npc-generator-agent";
 
-function stripMarkdownCodeBlocks(text: string): string {
-  let cleaned = text.trim();
-  if (cleaned.startsWith("```json")) {
-    cleaned = cleaned.slice(7);
-  } else if (cleaned.startsWith("```")) {
-    cleaned = cleaned.slice(3);
-  }
-  if (cleaned.endsWith("```")) {
-    cleaned = cleaned.slice(0, -3);
-  }
-  return cleaned.trim();
-}
+// Schema for structured NPC output - must match GraphQL schema
+const npcSchema = z.object({
+  name: z.string(),
+  race: z.string(),
+  gender: z.string(),
+  age: z.string(),
+  occupation: z.string(),
+  personality: z.string(),
+  appearance: z.string(),
+  quirk: z.string(),
+  motivation: z.string(),
+  secret: z.string().optional(),
+  background: z.string().optional(),
+});
 
 const generateNpcStep = createStep({
   id: "generateNpc",
@@ -69,28 +71,25 @@ const generateNpcStep = createStep({
 
     try {
       const result = await npcGeneratorAgent.generate(prompt, {
-        providerOptions: {
-          openai: {
-            reasoningEffort: "low",
-          },
+        structuredOutput: {
+          schema: npcSchema,
+          errorStrategy: "strict",
         },
         modelSettings: {
           temperature: 1.2,
         },
       });
 
-      if (result && typeof result.text === "string") {
-        console.log("Raw NPC result:", result.text);
-        const cleanedText = stripMarkdownCodeBlocks(result.text);
-        const npcData = JSON.parse(cleanedText);
-        return { npc: npcData };
+      if (result && result.object) {
+        console.log("Generated NPC:", result.object);
+        return { npc: result.object };
       }
+
+      throw new Error("No structured output returned");
     } catch (error) {
       console.error("Error generating NPC:", error);
-      throw new Error("Failed to generate NPC");
+      throw new Error(`Failed to generate NPC: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
-
-    throw new Error("No valid NPC data returned");
   },
 });
 

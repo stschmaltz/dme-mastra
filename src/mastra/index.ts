@@ -1,5 +1,5 @@
 import { Mastra } from "@mastra/core/mastra";
-import { PinoLogger } from "@mastra/loggers";
+import { ConsoleLogger } from "@mastra/core/logger";
 import { LibSQLStore } from "@mastra/libsql";
 import { VercelDeployer } from "@mastra/deployer-vercel";
 
@@ -37,13 +37,12 @@ export const mastra = new Mastra({
     npcGeneratorAgent,
   },
   storage: new LibSQLStore({
-    id: "dme-mastra-storage",
     url: process.env.TURSO_DATABASE_URL,
     authToken: process.env.TURSO_AUTH_TOKEN,
   }),
-  logger: new PinoLogger({
+  logger: new ConsoleLogger({
     name: "Mastra",
-    level: "info",
+    level: "INFO",
   }),
   server: {
     middleware: [

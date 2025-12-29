@@ -3,18 +3,15 @@ import { z } from "zod";
 import { lootTool } from "../tools";
 import { randomItemAgent } from "../agents/random-item-agent";
 
-function stripMarkdownCodeBlocks(text: string): string {
-  let cleaned = text.trim();
-  if (cleaned.startsWith("```json")) {
-    cleaned = cleaned.slice(7);
-  } else if (cleaned.startsWith("```")) {
-    cleaned = cleaned.slice(3);
-  }
-  if (cleaned.endsWith("```")) {
-    cleaned = cleaned.slice(0, -3);
-  }
-  return cleaned.trim();
-}
+// Schema for structured item output
+const itemSchema = z.object({
+  item: z.string(),
+  description: z.string(),
+  rarity: z.string(),
+  effects: z.string().optional(),
+});
+
+const itemsArraySchema = z.array(itemSchema);
 
 const generateRandomItemsStep = createStep({
   id: "generateRandomItems",
@@ -55,25 +52,27 @@ const generateRandomItemsStep = createStep({
     console.log("Generating random items with params:", { partyLevel, randomItemCount, location, lootQuality });
     try {
       const result = await randomItemAgent.generate(prompt, {
-        providerOptions: {
-          openai: {
-            reasoningEffort: "low",
-          },
+        structuredOutput: {
+          schema: itemsArraySchema,
+          errorStrategy: "fallback",
+          fallbackValue: [],
         },
         modelSettings: {
           temperature: 0.7,
         },
       });
-      if (result && typeof result.text === "string") {
-        console.log("Raw random items result:", result.text);
-        const cleanedText = stripMarkdownCodeBlocks(result.text);
-        const items = JSON.parse(cleanedText);
-        return { randomItems: items.slice(0, randomItemCount) };
+      
+      if (result && result.object && Array.isArray(result.object)) {
+        console.log("Generated random items:", result.object);
+        return { randomItems: result.object.slice(0, randomItemCount) };
       }
-    } catch {
-      /* noop */
+      
+      console.warn("No structured output returned for items, using empty array");
+      return { randomItems: [] };
+    } catch (error) {
+      console.error("Error generating random items:", error);
+      return { randomItems: [] };
     }
-    return { randomItems: [] };
   },
 });
 
