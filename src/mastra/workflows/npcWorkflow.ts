@@ -108,7 +108,7 @@ const generateNpcStep = createStep({
         providerOptions: {
           google: {
             thinkingConfig: {
-              thinkingLevel: useFastMode ? "low" : "high",
+              thinkingLevel: useFastMode ? "low" : "medium",
               includeThoughts: false,
             },
           },
