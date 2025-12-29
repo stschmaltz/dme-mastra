@@ -76,5 +76,7 @@ export const mastra = new Mastra({
       },
     ],
   },
-  deployer: new VercelDeployer(),
+  deployer: new VercelDeployer({
+    maxDuration: 60,
+  }),
 });
