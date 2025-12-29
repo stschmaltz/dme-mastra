@@ -1,7 +1,8 @@
 import { Agent } from "@mastra/core/agent";
-import { openai } from "@ai-sdk/openai";
+// import { openai } from "@ai-sdk/openai";
 import { z } from "zod";
 import { instructions } from "./random-item-agent-instructions";
+import { google } from "@ai-sdk/google";
 
 // The Zod schema can be exported for use by callers of this agent
 export const randomItemAgentInputSchema = z.object({
@@ -12,8 +13,11 @@ export const randomItemAgentInputSchema = z.object({
 
 export type RandomItemAgentInput = z.infer<typeof randomItemAgentInputSchema>;
 
+// const geminiModel = google("gemini-flash-latest");
+
 export const randomItemAgent = new Agent({
   name: "Unofficial Treasure Generator Agent",
-  model: openai("gpt-5-mini"),
+  id: "random-item-agent",
+  model: google("gemini-flash-latest"),
   instructions,
 });

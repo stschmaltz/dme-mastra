@@ -84,10 +84,10 @@ const compileLootStep = createStep({
       throw new Error("lootTool or its execute method is not available.");
     }
     const loot = await lootTool.execute({
-      context: { partyLevel, srdItemCount, randomItems, context: location },
-      id: lootTool.id,
-      description: lootTool.description,
-      inputSchema: lootTool.inputSchema,
+      partyLevel,
+      srdItemCount,
+      randomItems,
+      context: location,
     });
     return { loot };
   },

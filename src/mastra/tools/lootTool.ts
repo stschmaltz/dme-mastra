@@ -1,5 +1,5 @@
 // src/lootTool.ts
-import { createTool } from "@mastra/core";
+import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { cosmetics, trinkets, potions } from "./lootTables";
 import { coinsPerPlayer } from "./coinTool";
@@ -28,8 +28,8 @@ export const lootTool = createTool({
       ),
     context: z.string().optional(),
   }),
-  async execute(ctx) {
-    const { context, partyLevel, srdItemCount, randomItems } = ctx.context;
+  async execute(inputData) {
+    const { context, partyLevel, srdItemCount, randomItems } = inputData;
     const coinRolls = coinsPerPlayer(partyLevel);
 
     const srdPool = [

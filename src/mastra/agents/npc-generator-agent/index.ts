@@ -1,5 +1,6 @@
 import { Agent } from "@mastra/core/agent";
-import { openai } from "@ai-sdk/openai";
+// import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
 import { z } from "zod";
 import { instructions } from "./npc-generator-agent-instructions";
 
@@ -15,8 +16,11 @@ export type NpcGeneratorAgentInput = z.infer<
   typeof npcGeneratorAgentInputSchema
 >;
 
+// const model = openai("gpt-5-mini");
+
 export const npcGeneratorAgent = new Agent({
   name: "NPC Generator Agent",
-  model: openai("gpt-5-mini"),
+  id: "npc-generator-agent",
+  model: google("gemini-flash-latest"),
   instructions,
 });
