@@ -49,7 +49,12 @@ const generateRandomItemsStep = createStep({
       ? " IMPORTANT: You MUST include an 'effects' property for EVERY item with minor D&D 5e mechanical or flavor effects. Scale effects by rarity: common items get minor effects, legendary items get powerful effects. Use proper D&D terminology (advantage, saving throws, spell names, damage types). Effects are REQUIRED for all items."
       : " Do NOT include an 'effects' property. Only include 'item', 'description', and 'rarity' properties.";
     const prompt = `Generate ${randomItemCount} unique, non-SRD fantasy items for a party level of ${partyLevel}.${locationText}${qualityText}${effectsText} Ensure the output is ONLY a JSON array of objects with properties: item, description, rarity${includeEffects ? ", effects" : ""}.`;
-    console.log("Generating random items with params:", { partyLevel, randomItemCount, location, lootQuality });
+    console.log("Generating random items with params:", {
+      partyLevel,
+      randomItemCount,
+      location,
+      lootQuality,
+    });
     try {
       const result = await randomItemAgent.generate(prompt, {
         structuredOutput: {
@@ -61,13 +66,15 @@ const generateRandomItemsStep = createStep({
           temperature: 0.7,
         },
       });
-      
+
       if (result && result.object && Array.isArray(result.object)) {
         console.log("Generated random items:", result.object);
         return { randomItems: result.object.slice(0, randomItemCount) };
       }
-      
-      console.warn("No structured output returned for items, using empty array");
+
+      console.warn(
+        "No structured output returned for items, using empty array"
+      );
       return { randomItems: [] };
     } catch (error) {
       console.error("Error generating random items:", error);
@@ -92,18 +99,25 @@ const compileLootStep = createStep({
       partyLevel,
       srdItemCount,
       context: location,
-      randomItems,
+      randomItems = [],
     } = inputData;
+
+    console.log("compileLoot - inputData:", JSON.stringify(inputData));
+    console.log("compileLoot - randomItems count:", randomItems.length);
 
     if (!lootTool || typeof lootTool.execute !== "function") {
       throw new Error("lootTool or its execute method is not available.");
     }
+    // Tool expects ctx.context format
     const loot = await lootTool.execute({
-      partyLevel,
-      srdItemCount,
-      randomItems,
-      context: location,
+      context: {
+        partyLevel,
+        srdItemCount,
+        randomItems,
+        context: location,
+      },
     });
+    console.log("compileLoot - loot result count:", Array.isArray(loot) ? loot.length : "not an array");
     return { loot };
   },
 });
@@ -146,11 +160,14 @@ export const lootGenerationWorkflow = createWorkflow({
   .then(generateRandomItemsStep)
   .map(async ({ inputData, getInitData }) => {
     const initData = getInitData();
+    const randomItems = inputData?.randomItems ?? [];
+    console.log("Map step - inputData:", JSON.stringify(inputData));
+    console.log("Map step - randomItems count:", randomItems.length);
     return {
       partyLevel: initData.partyLevel,
       srdItemCount: initData.srdItemCount,
       context: initData.context,
-      randomItems: inputData.randomItems,
+      randomItems,
     };
   })
   .then(compileLootStep)

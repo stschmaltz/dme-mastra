@@ -4,7 +4,10 @@ import { LibSQLStore } from "@mastra/libsql";
 import { VercelDeployer } from "@mastra/deployer-vercel";
 
 import { randomItemAgent } from "./agents/random-item-agent";
-import { npcGeneratorAgent } from "./agents/npc-generator-agent";
+import {
+  npcGeneratorAgentFast,
+  npcGeneratorAgentPro,
+} from "./agents/npc-generator-agent";
 import { lootGenerationWorkflow } from "./workflows/lootWorkflow";
 import { npcGenerationWorkflow } from "./workflows/npcWorkflow";
 
@@ -34,7 +37,8 @@ export const mastra = new Mastra({
   },
   agents: {
     randomItemAgent,
-    npcGeneratorAgent,
+    npcGeneratorAgentFast,
+    npcGeneratorAgentPro,
   },
   storage: new LibSQLStore({
     url: process.env.TURSO_DATABASE_URL,
@@ -42,7 +46,7 @@ export const mastra = new Mastra({
   }),
   logger: new ConsoleLogger({
     name: "Mastra",
-    level: "INFO",
+    level: "info",
   }),
   server: {
     middleware: [

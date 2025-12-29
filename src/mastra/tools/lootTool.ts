@@ -29,7 +29,7 @@ export const lootTool = createTool({
     context: z.string().optional(),
   }),
   async execute(ctx) {
-    const { context, partyLevel, srdItemCount, randomItems } = ctx.context;
+    const { context, partyLevel, srdItemCount, randomItems = [] } = ctx.context;
     const coinRolls = coinsPerPlayer(partyLevel);
 
     const srdPool = [
@@ -48,10 +48,13 @@ export const lootTool = createTool({
       { level: "high", coins: coinRolls.high },
     ];
 
+    // Ensure randomItems is always an array
+    const safeRandomItems = Array.isArray(randomItems) ? randomItems : [];
+
     const result = [
       ...coinEntries,
       ...items.map((item) => ({ item, source: "official" })),
-      ...randomItems.map((ri) => ({
+      ...safeRandomItems.map((ri) => ({
         item: ri.item,
         source: "random",
         description: ri.description,

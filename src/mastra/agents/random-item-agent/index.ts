@@ -16,6 +16,6 @@ export type RandomItemAgentInput = z.infer<typeof randomItemAgentInputSchema>;
 export const randomItemAgent = new Agent({
   name: "Unofficial Treasure Generator Agent",
   id: "random-item-agent",
-  model: google("gemini-flash-latest"),
+  model: google("gemini-2.5-flash"),
   instructions,
 });
